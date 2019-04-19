@@ -12,8 +12,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // 隐藏ActionBar
-        getSupportActionBar().hide();
         findViewById(R.id.tv_login).setOnClickListener(this);
     }
 

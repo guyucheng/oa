@@ -1,10 +1,13 @@
 package com.example.oa;
 
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +15,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity {
+
+
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
     private View mMainNavBg;
@@ -20,11 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private CalendarFragment calendarFragment;
     private ContactsFragment contactsFragment;
     private AccountFragment accountFragment;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        actionBar = getActionBar();
+
 
         mMainFrame = findViewById(R.id.main_frame);
         mMainNav = findViewById(R.id.main_nav);
@@ -35,17 +43,22 @@ public class MainActivity extends AppCompatActivity {
         contactsFragment = new ContactsFragment();
         accountFragment = new AccountFragment();
 
-
+//        初始化设置为第一页
+        setFragment(massageFragment);
+//        初始化导航栏为红色
+        mMainNav.setItemBackgroundResource(R.color.colorMassage);
+//        初始化导航栏背景填充为红色
+        mMainNavBg.setBackgroundResource(R.color.colorMassage);
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 /**
                  * 导航选项卡切换页面
                  */
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.nav_massage:
-                        mMainNav.setItemBackgroundResource(R.color.colorPrimary);
-                        mMainNavBg.setBackgroundResource(R.color.colorPrimary);
+                        mMainNav.setItemBackgroundResource(R.color.colorMassage);
+                        mMainNavBg.setBackgroundResource(R.color.colorMassage);
                         setFragment(massageFragment);
                         return true;
                     case R.id.nav_calendar:
@@ -64,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(accountFragment);
                         return true;
 
-                        default:
-                            return false;
+                    default:
+                        return false;
 
                 }
             }
@@ -75,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 设置切换的页面
+     *
      * @param fragment
      */
     private void setFragment(Fragment fragment) {
