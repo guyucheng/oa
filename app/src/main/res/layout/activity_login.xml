@@ -1,90 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_back_ground"
 
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginRight="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="用户名:"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/et_user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:hint="请输入用户名"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/secondary_text_light_nodisable"
-            android:textSize="18sp" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:src="@drawable/login_back_ground"
+        android:scaleType="centerCrop"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="密    码:"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:hint="请输入密码"
-            android:inputType="textPassword"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/secondary_text_light_nodisable"
-            android:textSize="18sp" />
+            android:text="用户登录"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:layout_marginTop="60dp"
+            android:textColor="@color/colorWrite"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="30dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="用户名:"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:hint="请输入用户名"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/secondary_text_light_nodisable"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="密    码:"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/secondary_text_light_nodisable"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbx_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="30dp"
+            android:textColor="@color/colorWrite"
+            android:theme="@style/CardView.Light"
+            android:textSize="18sp"
+            android:text="记住帐号" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/bg_corner_button_selector"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="登    录"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/cbx_remember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="30dp"
-        android:textColor="@color/colorWrite"
-        android:theme="@style/CardView.Light"
-        android:textSize="18sp"
-        android:text="记住帐号" />
 
-    <TextView
-        android:id="@+id/tv_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/bg_corner_button_selector"
-        android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="登    录"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
-
-</LinearLayout>
+</RelativeLayout>
