@@ -3,6 +3,7 @@ package com.example.oa;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity {
-
+    public SharedPreferences userMsg; // 声明一个共享参数对象
 
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
