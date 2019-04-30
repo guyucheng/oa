@@ -3,6 +3,7 @@ package com.example.oa;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -19,12 +20,13 @@ import android.widget.Toast;
 public class AccountFragment extends Fragment implements View.OnClickListener {
 
 
+
     public AccountFragment() {
         // Required empty public constructor
     }
     protected View mView;   //申明一个视图对象
     protected Context mContext;
-
+    private SharedPreferences userMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +36,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         mView = inflater.inflate(R.layout.fragment_account,container,false);
         Button btn_sign_in = mView.findViewById(R.id.btn_sign_in);
         btn_sign_in.setOnClickListener(this);
+        Button btn_sign_out = mView.findViewById(R.id.btn_sign_out);
+        btn_sign_out.setOnClickListener(this);
 
         return mView;   //返回该碎片对象
     }
@@ -43,8 +47,25 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         if(v.getId()==R.id.btn_sign_in){
             Intent intent = new Intent(mContext,LoginActivity.class);
             startActivity(intent);
-
+        }else if(v.getId()==R.id.btn_sign_out){
+            Logout();
         }
+    }
+
+    // 退出登录功能
+    public void Logout(){
+        // 清空 Token
+        userMsg = this.getActivity().getSharedPreferences("LoginData",Context.MODE_PRIVATE);
+//        this.getActivity().getSharedPreferences("config", Context.MODE_PRIVATE).getString("LoginData", "");
+        SharedPreferences.Editor editor = userMsg.edit();
+        editor.putString("token", "");
+        editor.commit();    // 提交修改
+        Intent intent = new Intent(mContext,LoginActivity.class);
+        // 关闭之前的Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
+
     }
 
 }

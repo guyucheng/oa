@@ -2,8 +2,9 @@ package com.example.oa;
 
 
 import android.app.ActionBar;
-import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity {
-    public SharedPreferences userMsg; // 声明一个共享参数对象
-
     private BottomNavigationView mMainNav;
     private FrameLayout mMainFrame;
     private View mMainNavBg;
@@ -27,14 +28,25 @@ public class MainActivity extends AppCompatActivity {
     private ContactsFragment contactsFragment;
     private AccountFragment accountFragment;
     private ActionBar actionBar;
+    public Account mAccount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 账户信息
+        mAccount = new Account();
+
+        if (mAccount.isLoginStatus() == false) {
+            Intent intent = new Intent(this, LoginActivity.class);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //注意本行的FLAG设置
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // 关闭之前的Activity
+            startActivity(intent);
+
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         actionBar = getActionBar();
-
-
         mMainFrame = findViewById(R.id.main_frame);
         mMainNav = findViewById(R.id.main_nav);
         mMainNavBg = findViewById(R.id.main_nav_bg);
@@ -53,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mMainNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                /**
-                 * 导航选项卡切换页面
-                 */
+                // 导航选项卡切换页面
                 switch (menuItem.getItemId()) {
                     case R.id.nav_massage:
                         mMainNav.setItemBackgroundResource(R.color.colorMassage);
@@ -97,5 +107,64 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
     }
+
+
+    public class Account {
+        private boolean loginStatus;
+        private String username;
+        private String name;
+        private String token;
+
+        public Account() {
+            SharedPreferences shared = getSharedPreferences("LoginData", MODE_PRIVATE);
+            token = shared.getString("token", "");
+            username = shared.getString("username", "");
+            name = shared.getString("name", "");
+            if (token.isEmpty()) {
+                loginStatus = false;
+            } else {
+                loginStatus = true;
+            }
+        }
+
+
+        public boolean isLoginStatus() {
+            return loginStatus;
+        }
+
+        public void setLoginStatus(boolean loginStatus) {
+            this.loginStatus = loginStatus;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+
+    }
+
+
+
+
 
 }

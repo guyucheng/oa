@@ -1,13 +1,16 @@
 package com.example.oa;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -25,6 +28,7 @@ import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -35,7 +39,7 @@ import okhttp3.Response;
 import com.example.oa.MainActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    public SharedPreferences userMsg;
+    private SharedPreferences userMsg;   //申明一个共享对象用于存储用户名 密码 token
 
     private EditText et_user_name;
     private EditText et_password;
@@ -52,8 +56,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         CheckBox cbx_remember = findViewById(R.id.cbx_remember);
         // 设置勾选监听器
         cbx_remember.setOnCheckedChangeListener(new CheckListener());
+        //把登录状态记录在LoginData文件中
         userMsg = getSharedPreferences("LoginData", MODE_PRIVATE);
-
         // 读取上次的记住密码状态
         bRemember = userMsg.getBoolean("bRemember", false);
 
@@ -80,6 +84,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("TAG\t" + "password", password);
 
         if (v.getId() == R.id.tv_login) {
+            // 关闭键盘
+            InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
             // 验证用户名密码是否为空
             if (TextUtils.isEmpty(username)) {
                 Toast.makeText(this, "请填写用户名", Toast.LENGTH_SHORT).show();
@@ -100,12 +108,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString("name", "");
 //                Toast.makeText(this, "unChecked", Toast.LENGTH_SHORT).show();
             }
+
             editor.commit();
 
-        }
+            // TODO 编写登录函数
+            Login(username, password);
 
-        // TODO 编写登录函数
-        Login(username, password);
+
+
+        }
 
 
     }
@@ -125,9 +136,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    // 登录
-
+    //登录
     private void Login(String username, String password) {
+        // 构建json 的body
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         JSONObject obj = new JSONObject();
         String content = "";
@@ -138,56 +149,69 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.d("TAG\t" + "LoginActivity", content);
         RequestBody body = RequestBody.create(JSON, content);
 
+        // 拿到OkHttpClient对象
         OkHttpClient client = new OkHttpClient();
+
+
+        // 构建Request,将FormBody作为Post方法的参数传入
         final Request request = new Request.Builder()
                 .url(HttpUrls.LOGIN)
-                .header("Content-Type", "application/json")
                 .post(body)
                 .build();
 
+        // 将Request封装为Call
+        Call call = client.newCall(request);
 
-        client.newCall(request).enqueue(new Callback() {
+        // 调用请求,重写回调方法
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                Toast.makeText(LoginActivity.this, "Post Failed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String myResponse = response.body().string();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Toast.makeText(LoginActivity.this, myResponse, Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject respJson = new JSONObject(myResponse);
+                            int status = respJson.getInt("status");
 
-                try {
-                    JSONObject respJson = new JSONObject(myResponse);
-                    int status = respJson.getInt("status");
+                            if (status == 0) {
+                                // 用户名密码正确，登录正常
+                                String token = respJson.getString("token");
+                                // 存入Token
+                                SharedPreferences.Editor editor = userMsg.edit();
+                                editor.putString("token", token);
+                                editor.commit();    // 提交修改
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else if (status == 1) {
+                                // 用户名不存在
+                                Log.d("TAG\t" + "LoginActivity", "用户名不存在");
+                                Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
 
-                    if (status == 0) {
-                        // 用户名密码正确，登录正常
-                        String token = respJson.getString("token");
-                        // 存入Token
-                        SharedPreferences.Editor editor = userMsg.edit();
-                        editor.putString("token", token);
-                        editor.commit();    // 提交修改
-                        Log.d("TAG\t" + "token", token);
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else if (status == 1) {
-                        // 用户名不存在
-                        Log.d("TAG\t" + "LoginActivity", "用户名不存在");
-
-                    } else if (status == 2) {
-                        // 密码不正确
-                        Log.d("TAG\t" + "LoginActivity", "密码不正确");
+                            } else if (status == 2) {
+                                // 密码不正确
+                                Log.d("TAG\t" + "LoginActivity", "密码不正确");
+                                Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            Log.d("TAG\t" + "LoginActivity", "检查网络");
+                            Toast.makeText(LoginActivity.this, "请检查网络", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     }
-                } catch (JSONException e) {
-                    Log.d("TAG\t" + "LoginActivity", "检查网络");
-                    e.printStackTrace();
-                }
+                });
             }
         });
+
+
     }
 
 
