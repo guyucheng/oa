@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,16 +13,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_uer_chat_img"
+                android:layout_width="104dp"
+                android:layout_height="109dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                app:srcCompat="@mipmap/ic_chat_header_layer"
+                tools:src="@tools:sample/avatars[3]" />
+
+            <TextView
+                android:id="@+id/tv_fr_acc_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/iv_uer_chat_img"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/iv_uer_chat_img"
+                android:text="用户名"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="35sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_uer_chat_img"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@+id/iv_uer_chat_img"
+                android:text="abc1234555"
+                android:textSize="20dp" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
         <Button
-            android:id="@+id/btn_sign_in"
+            android:id="@+id/btn_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="登录"/>
+            android:text="设置" />
+
         <Button
             android:id="@+id/btn_sign_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="退出登录"/>
+            android:text="退出登录" />
     </LinearLayout>
 
 

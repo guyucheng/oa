@@ -13,4 +13,7 @@ public class HttpUrls {
     //登录地址
     public static final String LOGIN = HTTPHOST + "/api/login";
 
+
+    // 消息地址
+    public static final String MESSAGE = HTTPHOST + "/api/message";
 }

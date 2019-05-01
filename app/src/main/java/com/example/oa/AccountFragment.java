@@ -34,21 +34,20 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         mContext = getActivity();  // 获取活动页面上下文
         mView = inflater.inflate(R.layout.fragment_account,container,false);
-        Button btn_sign_in = mView.findViewById(R.id.btn_sign_in);
-        btn_sign_in.setOnClickListener(this);
         Button btn_sign_out = mView.findViewById(R.id.btn_sign_out);
         btn_sign_out.setOnClickListener(this);
+        Button btn_setting = mView.findViewById(R.id.btn_setting);
+        btn_setting.setOnClickListener(this);
 
         return mView;   //返回该碎片对象
     }
 
     @Override
     public void onClick(View v){
-        if(v.getId()==R.id.btn_sign_in){
-            Intent intent = new Intent(mContext,LoginActivity.class);
-            startActivity(intent);
-        }else if(v.getId()==R.id.btn_sign_out){
+        if(v.getId()==R.id.btn_sign_out){
             Logout();
+        }else if(v.getId()==R.id.btn_setting){
+            Toast.makeText(mContext, "您点击了设置！", Toast.LENGTH_SHORT).show();
         }
     }
 
