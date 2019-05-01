@@ -15,8 +15,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
+import com.example.oa.GData;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView mMainNav;
@@ -36,14 +36,15 @@ public class MainActivity extends AppCompatActivity {
         // 账户信息
         mAccount = new Account();
 
+        // 检查是否已经登录，如果没登录，跳转到登录界面
         if (mAccount.isLoginStatus() == false) {
             Intent intent = new Intent(this, LoginActivity.class);
-
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //注意本行的FLAG设置
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // 关闭之前的Activity
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // 关闭之前的Activity
             startActivity(intent);
-
         }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         actionBar = getActionBar();
@@ -99,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 设置切换的页面
-     *
      * @param fragment
      */
     private void setFragment(Fragment fragment) {
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             token = shared.getString("token", "");
             username = shared.getString("username", "");
             name = shared.getString("name", "");
+            GData.setToken(token);
             if (token.isEmpty()) {
                 loginStatus = false;
             } else {
@@ -154,10 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
         public String getToken() {
             return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
         }
 
 

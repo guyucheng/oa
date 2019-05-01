@@ -9,7 +9,6 @@ public class HttpUrls {
     public static final String HTTPHOST = "http://oa.gorange.cc:8080";
 
 
-
     //登录地址
     public static final String LOGIN = HTTPHOST + "/api/login";
 
