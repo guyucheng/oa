@@ -1,7 +1,6 @@
 package com.example.oa;
 
 
-import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,23 +26,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.example.oa.LoginActivity.unicodeToString;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MassageFragment extends Fragment {
+public class MassageFragment extends Fragment implements View.OnClickListener {
 
     Toolbar toolbar;
     protected View mView;   //申明一个视图对象,用来设置fragment的layout
@@ -71,19 +67,22 @@ public class MassageFragment extends Fragment {
         msgRecycleView = (RecyclerView) mView.findViewById(R.id.rcc_message_list);
         msgRecycleView.setHasFixedSize(true);
         msgRecycleView.setLayoutManager(new LinearLayoutManager(this.mView.getContext()));     //线性布局
+        // 刷新按钮监听器
+        mView.findViewById(R.id.iv_msg_fresh).setOnClickListener(this);
 
         // 获取消息
+
+
         FetchMsg();
 
-        // Inflate the layout for this fragment
-        return mView;
+            // Inflate the layout for this fragment
+            return mView;
 
     }
 
 
-
     // 从网络上拉取消息
-    public void FetchMsg(){
+    public void FetchMsg() {
         // 拿到OkHttpClient对象
         OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
@@ -99,6 +98,7 @@ public class MassageFragment extends Fragment {
             }
 
 
+            // 得到消息列表之后的处理
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
@@ -136,6 +136,9 @@ public class MassageFragment extends Fragment {
                             // 数据下载完毕之后，将加载数据到消息列表中
                             myAdapter = new MyAdapter();
                             msgRecycleView.setAdapter(myAdapter);
+                            // 记录下刷新时间
+                            GData.setLastFreshMsg(System.currentTimeMillis());
+                            Log.d("TAG", "GData.getLastFreshMsg():" + GData.getLastFreshMsg());
 
                         }
                     });
@@ -143,6 +146,14 @@ public class MassageFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_msg_fresh) {
+            Toast.makeText(getContext().getApplicationContext(), "正在刷新", Toast.LENGTH_SHORT).show();
+            FetchMsg();
+        }
     }
 
 
@@ -181,14 +192,27 @@ public class MassageFragment extends Fragment {
             holder.name.setText(data.get(position).get("from_user"));
             holder.title.setText(data.get(position).get("title"));
             holder.date.setText(data.get(position).get("date"));
+//            holder.time.
             // 该方法也可以对 name title data进行点击事件处理
+
+            // 单个项目的短按事件
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext().getApplicationContext(), "position:" + position, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext().getApplicationContext(), "position:" + position, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext().getApplicationContext(), DetlMsgActivity.class);
+                    // 传入参数
+                    intent.putExtra("from_user", data.get(position).get("from_user"));
+                    intent.putExtra("title", data.get(position).get("title"));
+                    intent.putExtra("content", data.get(position).get("content"));
+                    intent.putExtra("date", data.get(position).get("date"));
+                    intent.putExtra("time", data.get(position).get("time"));
+                    startActivity(intent);
                 }
             });
 
+
+            // 单个消息的长按事件
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -196,7 +220,7 @@ public class MassageFragment extends Fragment {
 
                     // 使用getContext().getApplicationContext() 获取Context
 //                    Toast.makeText(getContext().getApplicationContext(), "position:" + position, Toast.LENGTH_SHORT).show();
-                    showPopMenu(v,position);
+                    showPopMenu(v, position);
                     return false;
                 }
             });
