@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_contact">
+
+    <ImageView
+        android:id="@+id/iv_single_user_contact_head"
+        android:layout_width="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_chat_header_layer" />
+
+    <TextView
+        android:id="@+id/tv_contact_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_single_user_contact_head"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/iv_single_user_contact_head"
+        android:text="小明同学"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:id="@+id/tv_contact_item_department"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_single_user_contact_head"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="8dp"
+        android:layout_toEndOf="@+id/iv_single_user_contact_head"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="技术部门"
+        android:textSize="18sp" />
+</RelativeLayout>

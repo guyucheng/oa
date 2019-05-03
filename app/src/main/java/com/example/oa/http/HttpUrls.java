@@ -15,4 +15,12 @@ public class HttpUrls {
 
     // 消息地址
     public static final String MESSAGE = HTTPHOST + "/api/message";
+
+
+    // 获取联系人地址
+    public static final String GET_ALL_USERS = HTTPHOST + "/api/get_all_users";
+
+
+    // 获取个人信息
+    public static final String GET_PERSONAL_INFO = HTTPHOST + "/api/user";
 }

@@ -9,6 +9,26 @@ import java.util.Date;
 public class GData {
     private static String token;
     private static long lastFreshMsg;
+    private static String id = "";
+    private static String name = "";
+
+
+    public static String getId() {
+        return id;
+    }
+
+    public static void setId(String id) {
+        GData.id = id;
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        GData.name = name;
+    }
+
 
     public static long getLastFreshMsg() {
         return lastFreshMsg;
@@ -25,4 +45,14 @@ public class GData {
     public static void setToken(String token) {
         GData.token = token;
     }
+
+    public static void clear() {
+        token = "";
+        lastFreshMsg = 0;
+        id = "";
+        name = "";
+
+    }
+
+
 }

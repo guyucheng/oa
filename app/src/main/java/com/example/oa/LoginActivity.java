@@ -80,8 +80,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // 登录
         String username = et_user_name.getText().toString();
         String password = et_password.getText().toString();
-        Log.d("TAG\t" + "name", username);
-        Log.d("TAG\t" + "password", password);
 
         if (v.getId() == R.id.tv_login) {
             // 关闭键盘
@@ -137,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     //登录
-    private void Login(String username, String password) {
+    private void Login(final String username, String password) {
         // 构建json 的body
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         JSONObject obj = new JSONObject();
@@ -189,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 SharedPreferences.Editor editor = userMsg.edit();
                                 editor.putString("token", token);
                                 editor.commit();    // 提交修改
+                                GData.setId(username);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             } else if (status == 1) {
@@ -210,6 +209,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
             }
         });
+
+
+
+
+
 
 
     }

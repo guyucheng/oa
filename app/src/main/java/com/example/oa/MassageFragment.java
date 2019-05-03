@@ -52,10 +52,10 @@ public class MassageFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView msgRecycleView;
     private RecyclerView.LayoutManager mLayoutManager;
+    private MyAdapter myAdapter;
 
     private LinkedList<HashMap<String, String>> data;  // 申明测试数据
 
-    private MyAdapter myAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,8 +75,8 @@ public class MassageFragment extends Fragment implements View.OnClickListener {
 
         FetchMsg();
 
-            // Inflate the layout for this fragment
-            return mView;
+        // Inflate the layout for this fragment
+        return mView;
 
     }
 
@@ -148,6 +148,7 @@ public class MassageFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_msg_fresh) {
@@ -158,7 +159,7 @@ public class MassageFragment extends Fragment implements View.OnClickListener {
 
 
     // 加载消息列表
-    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+    class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
             public View itemView;
