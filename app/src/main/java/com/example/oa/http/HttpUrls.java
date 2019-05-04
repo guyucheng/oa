@@ -6,7 +6,7 @@ package com.example.oa.http;
 public class HttpUrls {
 
     // 服务器地址
-    public static final String HTTPHOST = "http://oa.gorange.cc:8080";
+    public static final String HTTPHOST = "http://192.168.1.2:8080";
 
 
     //登录地址
