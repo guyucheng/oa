@@ -63,7 +63,6 @@ public class ContactsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.mView.getContext()));     //线性布局
 
-
         FetchContacts();
 
         return mView;
@@ -133,6 +132,7 @@ public class ContactsFragment extends Fragment {
                             // 数据下载完毕之后，将加载数据到联系人列表中
                             myAdapter = new MyAdapter();
                             recyclerView.setAdapter(myAdapter);
+                            GData.setContactData(data);
 //                            // 记录下刷新时间
 //                            GData.setLastFreshMsg(System.currentTimeMillis());
 //                            Log.d("TAG", "GData.getLastFreshMsg():" + GData.getLastFreshMsg());

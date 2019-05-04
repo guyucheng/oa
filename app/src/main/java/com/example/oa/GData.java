@@ -1,6 +1,7 @@
 package com.example.oa;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by guyucheng on 19-5-1
@@ -11,7 +12,16 @@ public class GData {
     private static long lastFreshMsg;
     private static String id = "";
     private static String name = "";
+    private static LinkedList<HashMap<String, String>> ContactData;
 
+
+    public static LinkedList<HashMap<String, String>> getContactData() {
+        return ContactData;
+    }
+
+    public static void setContactData(LinkedList<HashMap<String, String>> contactData) {
+        GData.ContactData = contactData;
+    }
 
     public static String getId() {
         return id;
@@ -28,7 +38,6 @@ public class GData {
     public static void setName(String name) {
         GData.name = name;
     }
-
 
     public static long getLastFreshMsg() {
         return lastFreshMsg;
